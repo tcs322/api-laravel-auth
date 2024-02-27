@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/users', [App\Http\Controllers\Api\UserController::class, 'index']);
+Route::post('/users', [App\Http\Controllers\Api\UserController::class, 'store']);
 
 Route::get('/', function () {
     return response()->json([
