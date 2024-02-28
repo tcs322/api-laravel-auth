@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -29,6 +31,18 @@ class UserController extends Controller
         $data['password'] = bcrypt($data['password']);
         
         $user = User::create($data);
+
+        return new UserResource($user);
+    }
+
+    public function update(string $id, UpdateUserRequest $request)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->all();
+        if ($request->password) {
+            $data['password'] = bcrypt($data['password']);
+        }
+        $user->update($data);
 
         return new UserResource($user);
     }
