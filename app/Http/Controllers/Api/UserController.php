@@ -38,12 +38,18 @@ class UserController extends Controller
     public function update(string $id, UpdateUserRequest $request)
     {
         $user = User::findOrFail($id);
-        $data = $request->all();
+        $data = $request->validated();
         if ($request->password) {
             $data['password'] = bcrypt($data['password']);
         }
         $user->update($data);
 
         return new UserResource($user);
+    }
+
+    public function destroy(string $id)
+    {
+        $user = User::findOrFail($id)->delete();
+        return response()->json([], 204);
     }
 }
